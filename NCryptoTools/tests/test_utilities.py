@@ -94,36 +94,3 @@ def test_is_correct_ipv4(test_input, expected):
 #     """
 #     assert is_correct_chat_room_name(test_input) == expected
 
-
-# class TestSerialization(unittest.TestCase):
-#     def setUp(self):
-#         """
-#         Устанавливает контекст запуска тестов для unittest-класса.
-#         @return: -
-#         """
-#         self.json_msg = {
-#             'action': 'presence',
-#             'time': time.time(),
-#             'type': 'status',
-#             'user': {
-#                 'account_name': 'Andrew',
-#                 'status': 'Online!'
-#             }
-#         }
-
-#     def test_serialize(self):
-#         """
-#         Тест-функция сериалиалайзера.
-#         @return: -
-#         """
-#         msg_bytes = serialize(self.json_msg)
-#         self.assertIsInstance(msg_bytes, bytes)
-
-#     def test_deserialize(self):
-#         """
-#         Тест-функция десериалайзера.
-#         @return: -
-#         """
-#         msg_bytes = serialize(self.json_msg)
-#         msg_dict = deserialize(msg_bytes)
-#         self.assertIsInstance(msg_dict, dict)

@@ -2,60 +2,8 @@
 """
 Серия функций-помошников, к которым часто приходится обращаться
 """
-import os
-import json
 import re
 import datetime
-
-
-# Данную функцию можно уже не использовать напряму,
-# для этого имеется одноимённая функция в классе JIMBase модуля jim_base.py
-def serialize(msg_dict):
-    """
-    Производит сериализацию данных.
-    @param msg_dict: словарь с данными клиента/сервера.
-    @return: байтовое представление исходного словаря.
-    """
-    # Проверка, что в качестве параметра был принят именно словарь
-    if not isinstance(msg_dict, dict):
-        raise TypeError('Входной параметр не относится к типу dict!')
-
-    # Преобразование словаря в JSON строку
-    json_msg_str = json.dumps(msg_dict)
-
-    # Преобразование JSON строки в байты
-    msg_bytes = json_msg_str.encode('utf-8')
-
-    # Проверка, что в результате преобразования получились байты
-    if isinstance(msg_bytes, bytes):
-        return msg_bytes
-    else:
-        raise TypeError('Сериализованные данные не относятся к типу bytes!')
-
-
-# Данную функцию можно уже не использовать напряму,
-# для этого имеется одноимённая функция в классе JIMBase модуля jim_base.py
-def deserialize(msg_bytes):
-    """
-    Производит десериализацию данных.
-    @param msg_bytes: данные, представленные в наборе байтов.
-    @return: словарь с данными.
-    """
-    # Проверка, что в качестве параметра было принято сообщение в байтах
-    if not isinstance(msg_bytes, bytes):
-        raise TypeError('Входной параметр не относится к типу bytes!')
-
-    # Преобразование байтов исходного сообщения в JSON строку
-    json_msg_str = msg_bytes.decode('utf-8')
-
-    # Преобразование JSON строки в словарь
-    msg_dict = json.loads(json_msg_str)
-
-    # Проверка, что получившаяся структура является словарём
-    if isinstance(msg_dict, dict):
-        return msg_dict
-    else:
-        raise TypeError('Десериализованные данные не относятся к типу dict!')
 
 
 def is_correct_ipv4(ipv4_address):
@@ -82,52 +30,6 @@ def is_correct_port(port_number):
     re_port = re.compile('^(102[3-9]|1[3-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}' +
                          '|6[0-4][0-9]{3}|655[0-2][0-9]|6553[0-5])$')
     return re.fullmatch(re_port, port_number) is not None
-
-
-def send_msg(sock, msg):
-    """
-    Отсуществляеть отправку сообщения через сокет.
-    @param sock: сокет, с помощью которого осуществляется пересылка.
-    @param msg: сообщение, которое необходимо переслать.
-    @return: -
-    """
-    serialized_msg = serialize(msg)
-    sock.send(serialized_msg)
-
-
-def recv_msg(sock):
-    """
-    Принимает сообщение через сокет и возвращает его в виде словаря.
-    Если клиент закрыл соединение, то recv возвратит 0 байтов.
-    @param sock: сокет, через который осуществляется приём сообщения.
-    @return: словарь с данными сообщения.
-    """
-    msg_bytes = sock.recv(1024)
-    return deserialize(msg_bytes)
-
-
-def compose_log_file_name(log_file_path):
-    """
-    Форматирует строку с именем лог-лог файла, приводя его к приемлемому
-    виду: добавляется дата/время для удобства.
-    @param log_file_path: абсолютный/относительный путь к лог-файлу.
-    @return: отформатированный абсолютный/относительный путь к лог-файлу.
-    """
-    # Если был передан относительный путь к файла, либо путь, который
-    # не содержит '\\', то split() вернёт лист с единственным элементом
-    path_tokens = log_file_path.split('\\')
-
-    # Форматируем строку, которая содержит текущую временную отметку
-    time_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-
-    # Разбивает на имя и расширение файла. Расширение начинается с точки
-    file_name, file_extension = os.path.splitext(path_tokens[len(path_tokens)])
-
-    # Обновляем имя файла, добавляя туда временную отметку
-    path_tokens[len(path_tokens)] += file_name + '_' + time_str + file_extension
-
-    # Возвращаем сконкатенированные токены пути к файлу
-    return '\\'.join(path_tokens)
 
 
 def is_correct_http_error_code(http_error_code):

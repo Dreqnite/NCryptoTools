@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='NCryptoTools',
-    version='0.5.2',
+    version='0.5.3',
     packages=find_packages(where='.', exclude=['test_*']),
     description='A set of tools needed for both NCryptoClient and NCryptoServer applications',
     author='Andrew Krylov',
