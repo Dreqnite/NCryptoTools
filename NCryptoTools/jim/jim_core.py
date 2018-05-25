@@ -55,6 +55,7 @@ class JIMMessage:
 
         args_not_null = len(args) > 0
         kwargs_not_null = len(kwargs) > 0
+
         # One of additional arguments should not be empty
         if (args_not_null ^ kwargs_not_null) is False:
             raise RuntimeError('Error! Incorrect args (kwargs) arguments!')
@@ -66,33 +67,22 @@ class JIMMessage:
             self._serialized = False
             self._message = kwargs
         else:
-            raise TypeError('Incorrect data type! Expected: bytes or dict. Received: %s' % type(kwargs))
+            raise TypeError('Incorrect data type! Expected: bytes or dict. Received: args=%s, kwargs=%s' %
+                            (type(args), type(kwargs)))
 
     def serialize(self):
         """
         Performs data serialization for the following transmission.
         @return: JSON message in bytes.
         """
-        if self._serialized:
-            raise TypeError('Could not perform serialization! Data has been already serialized!')
-        json_str = json.dumps(self.to_dict())  # Converts message into JSON string
-        msg_bytes = json_str.encode(self._encoding)  # Converts message into bytes
-        if not isinstance(msg_bytes, bytes):
-            raise TypeError('Incorrect data type! Expected: bytes. Received: %s' % type(msg_bytes))
-        return msg_bytes
+        return to_bytes(self.to_dict(), self._encoding)
 
     def deserialize(self):
         """
         Performs data deserialization for the following reading and handling.
         @return: JSON message (dictionary).
         """
-        if not self._serialized:
-            raise TypeError('Could not perform deserialization! Data has been already deserialized!')
-        json_str = self._message.decode(self._encoding)  # Converts message into JSON string
-        msg_dict = json.loads(json_str)  # Converts message into dictionary
-        if not isinstance(msg_dict, dict):
-            raise TypeError('Incorrect data type! Expected: dict. Received: %s' % type(msg_dict))
-        return msg_dict
+        return to_dict(self._message, self._encoding)
 
     def to_dict(self):
         """
@@ -189,6 +179,38 @@ class JIMMessage:
         if self._serialized:
             self._message = self.deserialize()
         return is_valid_msg(self._msg_type, self._message)
+
+
+def to_dict(msg_bytes, encoding='utf-8'):
+    """
+    Converts bytes into JSON message (dictionary).
+    @param msg_bytes: serialized JSON message (bytes).
+    @param encoding: encoding system.
+    @return: JSON message (dictionary).
+    """
+    if not isinstance(msg_bytes, bytes):
+        raise TypeError('Incorrect data type! Expected: bytes. Received: %s' % type(msg_bytes))
+    json_str = msg_bytes.decode(encoding)  # Converts message into JSON string
+    msg_dict = json.loads(json_str)  # Converts message into dictionary
+    if not isinstance(msg_dict, dict):
+        raise TypeError('Incorrect data type! Expected: dict. Received: %s' % type(msg_dict))
+    return msg_dict
+
+
+def to_bytes(msg_dict, encoding='utf-8'):
+    """
+    Converts JSON message (dictionary) into bytes.
+    @param msg_dict: JSON message (dictionary).
+    @param encoding: encoding system.
+    @return: serialized JSON message (bytes).
+    """
+    if not isinstance(msg_dict, dict):
+        raise TypeError('Incorrect data type! Expected: dict. Received: %s' % type(msg_dict))
+    json_str = json.dumps(msg_dict)  # Converts message into JSON string
+    msg_bytes = json_str.encode(encoding)  # Converts message into bytes
+    if not isinstance(msg_bytes, bytes):
+        raise TypeError('Incorrect data type! Expected: bytes. Received: %s' % type(msg_bytes))
+    return msg_bytes
 
 
 def is_valid_msg(msg_type, msg_dict):
