@@ -182,62 +182,72 @@ class JIMMessage:
 
     def is_valid(self):
         """
-        Validates JSON message (dictionary).
+        Validates JSON message (dictionary). Made for convenience of calling
+        methods in chain.
         @return: boolean result of validation.
         """
         if self._serialized:
             self._message = self.deserialize()
+        return is_valid_msg(self._msg_type, self._message)
 
-        if self._msg_type == JIMMsgType.CTS_AUTHENTICATE:
-            return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.USER} <= set(self._message) and \
-                   {JIMMsgKey.LOGIN, JIMMsgKey.PASSWORD} <= set(self._message['user'])
 
-        if self._msg_type == JIMMsgType.CTS_QUIT:
-            return JIMMsgKey.ACTION in self._message
+def is_valid_msg(msg_type, msg_dict):
+    """
+    Validates JSON message (dictionary).
+    @param msg_type: type of message to be checked.
+    @param msg_dict: JSON message (dictionary) to validate.
+    @return: boolean result of validation.
+    """
+    if msg_type == JIMMsgType.CTS_AUTHENTICATE:
+        return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.USER} <= set(msg_dict) and \
+               {JIMMsgKey.LOGIN, JIMMsgKey.PASSWORD} <= set(msg_dict['user'])
 
-        if self._msg_type == JIMMsgType.CTS_PRESENCE:
-            return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.TYPE, JIMMsgKey.USER} <= set(self._message) and \
-                   {JIMMsgKey.LOGIN, JIMMsgKey.STATUS} <= set(self._message['user'])
+    if msg_type == JIMMsgType.CTS_QUIT:
+        return JIMMsgKey.ACTION in msg_dict
 
-        if self._msg_type == JIMMsgType.STC_PROBE:
-            return {JIMMsgKey.ACTION, JIMMsgKey.TIME} <= set(self._message)
+    if msg_type == JIMMsgType.CTS_PRESENCE:
+        return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.TYPE, JIMMsgKey.USER} <= set(msg_dict) and \
+               {JIMMsgKey.LOGIN, JIMMsgKey.STATUS} <= set(msg_dict['user'])
 
-        if self._msg_type == JIMMsgType.CTS_PERSONAL_MSG:
-            return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.TO, JIMMsgKey.FROM,
-                    JIMMsgKey.ENCODING, JIMMsgKey.MESSAGE} <= set(self._message)
+    if msg_type == JIMMsgType.STC_PROBE:
+        return {JIMMsgKey.ACTION, JIMMsgKey.TIME} <= set(msg_dict)
 
-        if self._msg_type == JIMMsgType.CTS_CHAT_MSG:
-            return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.TO, JIMMsgKey.FROM,
-                    JIMMsgKey.MESSAGE} <= set(self._message)
+    if msg_type == JIMMsgType.CTS_PERSONAL_MSG:
+        return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.TO, JIMMsgKey.FROM,
+                JIMMsgKey.ENCODING, JIMMsgKey.MESSAGE} <= set(msg_dict)
 
-        if self._msg_type == JIMMsgType.CTS_JOIN_CHAT:
-            return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.LOGIN, JIMMsgKey.ROOM} <= set(self._message)
+    if msg_type == JIMMsgType.CTS_CHAT_MSG:
+        return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.TO, JIMMsgKey.FROM,
+                JIMMsgKey.MESSAGE} <= set(msg_dict)
 
-        if self._msg_type == JIMMsgType.CTS_LEAVE_CHAT:
-            return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.LOGIN, JIMMsgKey.ROOM} <= set(self._message)
+    if msg_type == JIMMsgType.CTS_JOIN_CHAT:
+        return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.LOGIN, JIMMsgKey.ROOM} <= set(msg_dict)
 
-        if self._msg_type == JIMMsgType.STC_ALERT:
-            return {JIMMsgKey.RESPONSE, JIMMsgKey.ALERT} <= set(self._message)
+    if msg_type == JIMMsgType.CTS_LEAVE_CHAT:
+        return {JIMMsgKey.ACTION, JIMMsgKey.TIME, JIMMsgKey.LOGIN, JIMMsgKey.ROOM} <= set(msg_dict)
 
-        if self._msg_type == JIMMsgType.STC_ERROR:
-            return {JIMMsgKey.RESPONSE, JIMMsgKey.ERROR} <= set(self._message)
+    if msg_type == JIMMsgType.STC_ALERT:
+        return {JIMMsgKey.RESPONSE, JIMMsgKey.ALERT} <= set(msg_dict)
 
-        if self._msg_type == JIMMsgType.CTS_GET_CONTACTS:
-            return {JIMMsgKey.ACTION, JIMMsgKey.TIME} <= set(self._message)
+    if msg_type == JIMMsgType.STC_ERROR:
+        return {JIMMsgKey.RESPONSE, JIMMsgKey.ERROR} <= set(msg_dict)
 
-        if self._msg_type == JIMMsgType.STC_QUANTITY:
-            return {JIMMsgKey.RESPONSE, JIMMsgKey.QUANTITY} <= set(self._message)
+    if msg_type == JIMMsgType.CTS_GET_CONTACTS:
+        return {JIMMsgKey.ACTION, JIMMsgKey.TIME} <= set(msg_dict)
 
-        if self._msg_type == JIMMsgType.STC_CONTACTS_LIST:
-            return {JIMMsgKey.ACTION, JIMMsgKey.LOGIN} <= set(self._message)
+    if msg_type == JIMMsgType.STC_QUANTITY:
+        return {JIMMsgKey.RESPONSE, JIMMsgKey.QUANTITY} <= set(msg_dict)
 
-        if self._msg_type == JIMMsgType.CTS_ADD_CONTACT:
-            return {JIMMsgKey.ACTION, JIMMsgKey.LOGIN, JIMMsgKey.TIME} <= set(self._message)
+    if msg_type == JIMMsgType.STC_CONTACTS_LIST:
+        return {JIMMsgKey.ACTION, JIMMsgKey.LOGIN} <= set(msg_dict)
 
-        if self._msg_type == JIMMsgType.CTS_DEL_CONTACT:
-            return {JIMMsgKey.ACTION, JIMMsgKey.LOGIN, JIMMsgKey.TIME} <= set(self._message)
+    if msg_type == JIMMsgType.CTS_ADD_CONTACT:
+        return {JIMMsgKey.ACTION, JIMMsgKey.LOGIN, JIMMsgKey.TIME} <= set(msg_dict)
 
-        raise UnknownJIMObjectException(self._msg_type)
+    if msg_type == JIMMsgType.CTS_DEL_CONTACT:
+        return {JIMMsgKey.ACTION, JIMMsgKey.LOGIN, JIMMsgKey.TIME} <= set(msg_dict)
+
+    raise UnknownJIMObjectException(msg_type)
 
 
 def type_of(msg_dict):
