@@ -4,7 +4,7 @@
 """
 import os
 from shutil import copyfile
-from NCryptoTools.Tools.file import File, IniFile
+from NCryptoTools.tools.file import File, IniFile
 
 
 class FileManager:
