@@ -85,15 +85,15 @@ class TextStyleManager:
 
             prev_end = span_right + len('</span>')
 
-        # Text block with no style after the last span
-        span_right += len('</span>')
-        if span_right < len(main_part):
-            last_text_fragment = main_part[span_right:]
-            self._style_map[last_text_fragment] = ''
-
         # If all text is plain
         if len(self._style_map) == 0:
             self._style_map[main_part] = ''
+        else:
+            # Text block with no style after the last span
+            span_right += len('</span>')
+            if span_right < len(main_part):
+                last_text_fragment = main_part[span_right:]
+                self._style_map[last_text_fragment] = ''
 
     def apply_style(self, style):
         """
