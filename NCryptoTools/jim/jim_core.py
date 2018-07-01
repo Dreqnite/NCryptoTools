@@ -90,83 +90,87 @@ class JIMMessage:
         @return: JSON dictionary.
         """
         if self._msg_type == JIMMsgType.CTS_AUTHENTICATE:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.TIME: self._message['time'],
-                    JIMMsgKey.USER: {JIMMsgKey.LOGIN: self._message['login'],
-                                     JIMMsgKey.PASSWORD: self._message['password']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.TIME: self._message[JIMMsgKey.TIME],
+                    JIMMsgKey.USER: {JIMMsgKey.LOGIN: self._message[JIMMsgKey.LOGIN],
+                                     JIMMsgKey.PASSWORD: self._message[JIMMsgKey.PASSWORD]}
                     }
 
         if self._msg_type == JIMMsgType.CTS_QUIT:
-            return {JIMMsgKey.ACTION: self._message['action']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION]}
 
         if self._msg_type == JIMMsgType.CTS_PRESENCE:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.TIME: self._message['time'],
-                    JIMMsgKey.TYPE: self._message['type'],
-                    JIMMsgKey.USER: {JIMMsgKey.LOGIN: self._message['login'],
-                                     JIMMsgKey.PASSWORD: self._message['password']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.TIME: self._message[JIMMsgKey.TIME],
+                    JIMMsgKey.TYPE: self._message[JIMMsgKey.TYPE],
+                    JIMMsgKey.USER: {JIMMsgKey.LOGIN: self._message[JIMMsgKey.LOGIN],
+                                     JIMMsgKey.PASSWORD: self._message[JIMMsgKey.PASSWORD]}
                     }
 
         if self._msg_type == JIMMsgType.STC_PROBE:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.TIME: self._message['time']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.TIME: self._message[JIMMsgKey.TIME]}
 
         if self._msg_type == JIMMsgType.CTS_PERSONAL_MSG:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.TIME: self._message['time'],
-                    JIMMsgKey.TO: self._message['to'],
-                    JIMMsgKey.FROM: self._message['from'],
-                    JIMMsgKey.ENCODING: self._message['encoding'],
-                    JIMMsgKey.MESSAGE: self._message['message']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.TIME: self._message[JIMMsgKey.TIME],
+                    JIMMsgKey.TO: self._message[JIMMsgKey.TO],
+                    JIMMsgKey.FROM: self._message[JIMMsgKey.FROM],
+                    JIMMsgKey.ENCODING: self._message[JIMMsgKey.ENCODING],
+                    JIMMsgKey.MESSAGE: self._message[JIMMsgKey.MESSAGE]}
 
         if self._msg_type == JIMMsgType.CTS_CHAT_MSG:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.TIME: self._message['time'],
-                    JIMMsgKey.TO: self._message['to'],
-                    JIMMsgKey.FROM: self._message['from'],
-                    JIMMsgKey.MESSAGE: self._message['message']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.TIME: self._message[JIMMsgKey.TIME],
+                    JIMMsgKey.TO: self._message[JIMMsgKey.TO],
+                    JIMMsgKey.FROM: self._message[JIMMsgKey.FROM],
+                    JIMMsgKey.MESSAGE: self._message[JIMMsgKey.MESSAGE]}
 
         if self._msg_type == JIMMsgType.CTS_JOIN_CHAT:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.TIME: self._message['time'],
-                    JIMMsgKey.LOGIN: self._message['login'],
-                    JIMMsgKey.ROOM: self._message['room']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.TIME: self._message[JIMMsgKey.TIME],
+                    JIMMsgKey.LOGIN: self._message[JIMMsgKey.LOGIN],
+                    JIMMsgKey.ROOM: self._message[JIMMsgKey.ROOM]}
 
         if self._msg_type == JIMMsgType.CTS_LEAVE_CHAT:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.TIME: self._message['time'],
-                    JIMMsgKey.LOGIN: self._message['login'],
-                    JIMMsgKey.ROOM: self._message['room']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.TIME: self._message[JIMMsgKey.TIME],
+                    JIMMsgKey.LOGIN: self._message[JIMMsgKey.LOGIN],
+                    JIMMsgKey.ROOM: self._message[JIMMsgKey.ROOM]}
 
         if self._msg_type == JIMMsgType.STC_ALERT:
-            return {JIMMsgKey.RESPONSE: self._message['response'],
-                    JIMMsgKey.ALERT: self._message['alert']}
+            return {JIMMsgKey.RESPONSE: self._message[JIMMsgKey.RESPONSE],
+                    JIMMsgKey.ALERT: self._message[JIMMsgKey.ALERT]}
 
         if self._msg_type == JIMMsgType.STC_ERROR:
-            return {JIMMsgKey.RESPONSE: self._message['response'],
-                    JIMMsgKey.ERROR: self._message['error']}
+            return {JIMMsgKey.RESPONSE: self._message[JIMMsgKey.RESPONSE],
+                    JIMMsgKey.ERROR: self._message[JIMMsgKey.ERROR]}
 
         if self._msg_type == JIMMsgType.CTS_GET_CONTACTS:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.TIME: self._message['time']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.TIME: self._message[JIMMsgKey.TIME]}
 
         if self._msg_type == JIMMsgType.STC_QUANTITY:
-            return {JIMMsgKey.RESPONSE: self._message['response'],
-                    JIMMsgKey.QUANTITY: self._message['quantity']}
+            return {JIMMsgKey.RESPONSE: self._message[JIMMsgKey.RESPONSE],
+                    JIMMsgKey.QUANTITY: self._message[JIMMsgKey.QUANTITY]}
 
         if self._msg_type == JIMMsgType.STC_CONTACTS_LIST:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.LOGIN: self._message['login']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.LOGIN: self._message[JIMMsgKey.LOGIN]}
 
         if self._msg_type == JIMMsgType.CTS_ADD_CONTACT:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.TIME: self._message['time'],
-                    JIMMsgKey.LOGIN: self._message['login']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.TIME: self._message[JIMMsgKey.TIME],
+                    JIMMsgKey.LOGIN: self._message[JIMMsgKey.LOGIN]}
 
         if self._msg_type == JIMMsgType.CTS_DEL_CONTACT:
-            return {JIMMsgKey.ACTION: self._message['action'],
-                    JIMMsgKey.TIME: self._message['time'],
-                    JIMMsgKey.LOGIN: self._message['login']}
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.TIME: self._message[JIMMsgKey.TIME],
+                    JIMMsgKey.LOGIN: self._message[JIMMsgKey.LOGIN]}
+
+        if self._msg_type == JIMMsgType.STC_QUIT:
+            return {JIMMsgKey.ACTION: self._message[JIMMsgKey.ACTION],
+                    JIMMsgKey.LOGIN: self._message[JIMMsgKey.LOGIN]}
 
         raise UnknownJIMObjectException(type(self._msg_type))
 
@@ -269,6 +273,9 @@ def is_valid_msg(msg_type, msg_dict):
     if msg_type == JIMMsgType.CTS_DEL_CONTACT:
         return {JIMMsgKey.ACTION, JIMMsgKey.LOGIN, JIMMsgKey.TIME} <= set(msg_dict)
 
+    if msg_type == JIMMsgType.STC_QUIT:
+        return {JIMMsgKey.ACTION, JIMMsgKey.LOGIN} <= set(msg_dict)
+
     raise UnknownJIMObjectException(msg_type)
 
 
@@ -298,6 +305,7 @@ def type_of(msg_dict):
             'add_contact': JIMMsgType.CTS_ADD_CONTACT,
             'del_contact': JIMMsgType.CTS_DEL_CONTACT,
             'contacts_list': JIMMsgType.STC_CONTACTS_LIST,
+            'client_quit': JIMMsgType.STC_QUIT
         }
         action_type = msg_dict['action']
         type_to_check = action_types[action_type]

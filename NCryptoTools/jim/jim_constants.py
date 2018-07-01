@@ -72,16 +72,16 @@ class JIMMsgType(Enum):
     CTS_* - client-to-server message.
     STC_* - server-to-client message.
     """
-    UNDEFINED_TYPE = -1,
-    CTS_AUTHENTICATE = 0,
-    CTS_QUIT = 1,
-    CTS_PRESENCE = 2,
-    CTS_PERSONAL_MSG = 3,
-    CTS_CHAT_MSG = 4,
-    CTS_JOIN_CHAT = 5,
-    CTS_LEAVE_CHAT = 6,
-    CTS_GET_CONTACTS = 7,
-    CTS_ADD_CONTACT = 8,
+    UNDEFINED_TYPE = -1
+    CTS_AUTHENTICATE = 0
+    CTS_QUIT = 1
+    CTS_PRESENCE = 2
+    CTS_PERSONAL_MSG = 3
+    CTS_CHAT_MSG = 4
+    CTS_JOIN_CHAT = 5
+    CTS_LEAVE_CHAT = 6
+    CTS_GET_CONTACTS = 7
+    CTS_ADD_CONTACT = 8
     CTS_DEL_CONTACT = 9,
     CLS_REGISTER = 10,
     STC_ALERT = 50,
@@ -89,3 +89,4 @@ class JIMMsgType(Enum):
     STC_PROBE = 52,
     STC_QUANTITY = 53,
     STC_CONTACTS_LIST = 54
+    STC_QUIT = 55
