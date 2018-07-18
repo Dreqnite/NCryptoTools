@@ -10,28 +10,68 @@ class Hasher:
     """
     Performs data hashing with needed algorithm, salt size and amount of rounds.
     """
-    def __init__(self, data, salt_size=16, algorithm='sha256', rounds=100000):
+    def __init__(self, data, salt_bytes=b'', salt_size=16, algorithm='sha256', rounds=100000):
         """
         Constructor.
         @param data: data to be hashed.
+        @param salt_bytes: salt.
         @param salt_size: size of salt to be generated.
         @param algorithm: algorithm which hashes data (e.g. SHA256).
         @param rounds: amount of hashing rounds.
         """
         self._data_bytes = data.encode()
-        self._salt_size = salt_size
-        self._salt_bytes = None
-        self.generate_salt()
+        self._salt_size = salt_size if len(salt_bytes) == 0 else len(salt_bytes)
+        self._salt_bytes = self.generate_salt() if len(salt_bytes) == 0 else salt_bytes
         self._algorithm = algorithm
         self._rounds = rounds
+
+    @property
+    def data_bytes(self):
+        """
+        Gets initial data as bytes.
+        @return: initial data as bytes.
+        """
+        return self._data_bytes
+
+    @property
+    def salt_size(self):
+        """
+        Gets salt size.
+        @return: salt size.
+        """
+        return self._salt_size
+
+    @property
+    def salt_bytes(self):
+        """
+        Gets salt bytes.
+        @return: salt bytes.
+        """
+        return self._salt_bytes
+
+    @property
+    def algorithm(self):
+        """
+        Gets used hashing algorithm name.
+        @return: hashing algorithm name.
+        """
+        return self._algorithm
+
+    @property
+    def rounds(self):
+        """
+        Gets amount of rounds.
+        @return: amount of rounds.
+        """
+        return self._rounds
 
     def generate_salt(self):
         """
         Generates random salt of needed length. It's highly recommended to use
         salt of size 16 or more.
-        @return: None.
+        @return: salt of needed size.
         """
-        self._salt_bytes = os.urandom(self._salt_size)
+        return os.urandom(self._salt_size)
 
     def set_salt_size(self, new_size):
         """
